@@ -34,26 +34,24 @@ post '/visit' do
   @datetime = params[:datetime]
   @barber = params[:barber]
   @color = params[:color]
-  if @username == ''
-    @error = 'Enter your name'
-    return erb :visit
+
+  hh = { username: 'Enter your name',
+         phone: 'Enter your phone',
+         datetime: 'Enter correct date and time' }
+
+  hh.each do |key, _value|
+    if params[key] == ''
+      @error = hh[key]
+      return erb :visit
+    end
   end
-  if @phone == ''
-    @error = 'Enter your phone'
-    return erb :visit
-  end
-  if @datetime == ''
-    @error = 'Enter correct date and time'
-    return erb :visit
-  end
-  if @error != ''
-    f = File.open('public/userlist.txt', 'a')
-    f.write "\nUser: #{@username}. Phone: #{@phone}. Date and time: #{@datetime}. Barber: #{@barber}. Color: #{@color}"
-    f.close
-    @title = 'Thank you!'
-    @message = "Dear #{@username}, we'll waiting for you at #{@datetime}."
-    erb :visit
-  end
+
+  f = File.open('public/userlist.txt', 'a')
+  f.write "\nUser: #{@username}. Phone: #{@phone}. Date and time: #{@datetime}. Barber: #{@barber}. Color: #{@color}"
+  f.close
+  @title = 'Thank you!'
+  @message = "Dear #{@username}, we'll waiting for you at #{@datetime}."
+  erb :visit
 end
 
 get '/contacts' do
