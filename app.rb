@@ -20,6 +20,7 @@ post '/' do
 end
 
 get '/about' do
+  @error = 'something wrong!!!'
   erb :about
 end
 
@@ -33,6 +34,10 @@ post '/visit' do
   @datetime = params[:datetime]
   @barber = params[:barber]
   @color = params[:color]
+  if @username == ''
+    @error = 'Enter you name'
+    return erb :visit
+  end
 
   f = File.open('public/userlist.txt', 'a')
   f.write "\nUser: #{@username}. Phone: #{@phone}. Date and time: #{@datetime}. Barber: #{@barber}. Color: #{@color}"
