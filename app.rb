@@ -1,5 +1,6 @@
 require 'rubygems'
 require 'sinatra'
+
 # require 'sinatra/reloader'
 
 get '/' do
@@ -59,10 +60,20 @@ get '/contacts' do
 end
 
 post '/contacts' do
-  @email = params[:email]
-  @text = params['text']
+  @name = params[:name]
+  @mail = params[:mail]
+  @body = params[:body]
+  hh = { name: 'Enter your name',
+         mail: 'Enter your email',
+         body: 'Enter your message' }
 
+  hh.each do |key, _value|
+    if params[key] == ''
+      @error = hh[key]
+      return erb :contacts
+    end
+  end
   f = File.open('public/contacts.txt', 'a')
-  f.write "\n#{@email} - #{@text}"
+  f.write "\n#{@mail} - #{@body}"
   f.close
 end
