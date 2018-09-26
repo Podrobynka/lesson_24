@@ -63,9 +63,11 @@ post '/contacts' do
   @name = params[:name]
   @mail = params[:mail]
   @body = params[:body]
-  hh = { name: 'Enter your name',
-         mail: 'Enter your email',
-         body: 'Enter your message' }
+  hh = {
+    name: 'Enter your name',
+    mail: 'Enter your email',
+    body: 'Enter your message'
+  }
 
   hh.each do |key, _value|
     if params[key] == ''
