@@ -35,7 +35,7 @@ post '/visit' do
   @phone = params[:phone]
   @datetime = params[:datetime]
   @barber = params[:barber]
-  @color = params[:color]
+  @color = params[:colorpicker]
 
   hh = { username: 'Enter your name',
          phone: 'Enter your phone',
