@@ -1,5 +1,6 @@
 require 'rubygems'
 require 'sinatra'
+require 'pony'
 
 # require 'sinatra/reloader'
 
@@ -61,8 +62,8 @@ end
 
 post '/contacts' do
   @name = params[:name]
-  @mail = params[:mail]
-  @body = params[:body]
+  mail = params[:mail]
+  body = params[:body]
   hh = {
     name: 'Enter your name',
     mail: 'Enter your email',
@@ -75,7 +76,22 @@ post '/contacts' do
       return erb :contacts
     end
   end
-  f = File.open('public/contacts.txt', 'a')
-  f.write "\n#{@mail} - #{@body}"
-  f.close
+
+  Pony.options = {
+    subject: "Received from: #{@name} (#{mail})",
+    body: body,
+    via: :smtp,
+    via_options: {
+      address: 'smtp.gmail.com',
+      port: '587',
+      enable_starttls_auto: true,
+      user_name: 'yfgurda@gmail.com',
+      password: 'zxcvbn123',
+      authentication: :plain,
+      domain: 'localhost'
+    }
+  }
+
+  Pony.mail(to: 'yfgurda@gmail.com')
+  erb :success
 end
